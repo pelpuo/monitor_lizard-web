@@ -2,8 +2,13 @@ import React from 'react'
 import Sidebar from '../components/Sidebar'
 
 import {Link} from "react-router-dom"
+import { useAuth } from '../contexts/AuthContext';
+import { useAttendance } from '../contexts/AttendanceContext';
 
 function EmployeesUnverified() {
+    const {currentUser} = useAuth();
+    const {organizationData, allEmployeesData, verifyEmployee, deleteEmployee} = useAttendance();
+
   return (
     <div className='flex w-full'>
     <Sidebar active="employees"/>
@@ -13,8 +18,8 @@ function EmployeesUnverified() {
         <h1 className='text-3xl font-bold'>Employees</h1>
         <div className='flex items-center'>
           <div className='flex flex-col items-end'>
-            <h3 className='text-lg font-bold'>Jane Doe</h3>
-            <h5 className='text-md text-app-green'>jdoe@example.com</h5>
+            <h3 className='text-lg font-bold'>{organizationData?.adminName}</h3>
+            <h5 className='text-md text-app-green'>{currentUser?.email}</h5>
           </div>
           <div className='ml-2 rounded-lg w-12 h-12 bg-app-green'></div>
         </div>
@@ -48,129 +53,25 @@ function EmployeesUnverified() {
             </tr>
         </thead>
         <tbody>
-            <tr class="text-app-dark">
-                <td class="py-4 px-6">1</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                    <div className='flex'>
-                        <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                        <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                    </div>
-                </td>
-            </tr>
+        {
+            Array.from(allEmployeesData).filter(employee => !employee[1].isVerified).map((employeeArr, index) => {
+              const employee = employeeArr[1]
 
-            <tr class="text-app-dark bg-app-light-gray">
-                <td class="py-4 px-6">2</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                <div className='flex'>
-                    <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                    <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark">
-                <td class="py-4 px-6">3</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                    <div className='flex'>
-                        <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                        <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark bg-app-light-gray">
-                <td class="py-4 px-6">4</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                <div className='flex'>
-                    <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                    <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark">
-                <td class="py-4 px-6">5</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                    <div className='flex'>
-                        <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                        <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark bg-app-light-gray">
-                <td class="py-4 px-6">6</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                <div className='flex'>
-                    <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                    <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark">
-                <td class="py-4 px-6">7</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                    <div className='flex'>
-                        <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                        <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark bg-app-light-gray">
-                <td class="py-4 px-6">8</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                <div className='flex'>
-                    <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                    <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark">
-                <td class="py-4 px-6">9</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                    <div className='flex'>
-                        <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                        <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                    </div>
-                </td>
-            </tr>
-
-            <tr class="text-app-dark bg-app-light-gray">
-                <td class="py-4 px-6">10</td>
-                <td class="py-4 px-6">Malcolm Lockyer</td>
-                <td class="py-4 px-6">mlockyer@example.com</td>
-                <td class="py-4 px-6 font-semibold text-app-green">
-                <div className='flex'>
-                    <button className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
-                    <button className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
-                </div>
-                </td>
-            </tr>
-
-          
-
-            
+              return(
+                <tr class={`text-app-dark ${index %2 === 1 && "bg-app-light-gray"}`} key={index}>
+                    <td class="py-4 px-6">{index + 1}</td>
+                    <td class="py-4 px-6">{employee.firstName} {employee.lastName}</td>
+                    <td class="py-4 px-6">{employee.email}</td>
+                    <td class="py-4 px-6 font-semibold text-app-green">
+                        <div className='flex'>
+                            <button onClick={() => verifyEmployee(employee.uid)} className='bg-app-green text-white text-md py-2 px-10 mr-2 rounded'>Verify</button>
+                            <button onClick={() => deleteEmployee(employee.uid)} className='border border-app-pink text-app-pink text-md py-2 px-10 rounded'>Delete</button>
+                        </div>
+                    </td>
+                </tr>
+              )
+            })
+          }  
 
         </tbody>
     </table>
