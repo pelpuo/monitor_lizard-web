@@ -41,18 +41,18 @@ export function AttendanceProvider({children}){
     const retrieveAttendanceData = useCallback(async (uid) =>{
         console.log("retrieveAttendanceData made a query")
         await db.collection("attendance").where("organizationId", "==", uid ?? "")
-        .get()
-        .then(querySnapshot =>{
+        .onSnapshot(querySnapshot =>{
             var temp = new Map();
             querySnapshot.forEach(doc => temp.set(doc.id, doc.data()))
             // console.log(uid)
             // console.log(temp)
-            return temp;
-        })
-        .then((temp) => {
-            // console.log(arr)
+            // return temp;
             setAllAttendanceData(temp)
         })
+        // .then((temp) => {
+        //     // console.log(arr)
+        //     setAllAttendanceData(temp)
+        // })
         
     }, [])
 
@@ -116,11 +116,23 @@ export function AttendanceProvider({children}){
     }, [allAttendanceData])
 
     const verifyEmployee = async (employeeId) => {
-        console.log(`Employee ${employeeId} has been verified`)
+        await db.collection("employee").doc(employeeId)
+        .update({
+            isVerified:true
+        })
+        .then(() =>{
+            retrieveAllEmployees(organizationData.uid);
+            // allEmployeesData.get(employeeId).isVerified = true;
+        })
     }
 
     const deleteEmployee = async (employeeId) => {
-        console.log(`Employee ${employeeId} has been deleted`)
+        await db.collection("employee").doc(employeeId)
+        .delete()
+        .then(() =>{
+            retrieveAllEmployees(organizationData.uid)
+            // allEmployeesData.delete(employeeId);
+        })
     }
 
     useEffect(() => {

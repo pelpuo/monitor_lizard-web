@@ -165,7 +165,7 @@ function Settings() {
         <h2 className='text-md text-app-dark mr-2'>Employee Code:</h2>
         <h2 className='text-xl font-bold text-app-dark'>{uniqueCode}</h2>
         </div>
-        <button className='border text-sm border-app-gray text-app-gray py-2 px-8 hover:border-app-green hover:text-app-green rounded transition ease-in-out'>Save Changes</button>
+        <button className='border text-sm border-app-gray text-app-gray py-2 px-8 hover:border-app-green hover:text-app-green rounded transition ease-in-out'>Randomize</button>
       </div>
 
     </div>
