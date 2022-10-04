@@ -36,7 +36,7 @@ function Employees() {
         </div>
         <div className='flex items-end px-6 py-2'>
           <h5 className='text-lg text-app-gray mr-2'>Code:</h5>
-          <h3 className='text-2xl font-bold'>Xc23Q</h3>
+          <h3 className='text-2xl font-bold'>{organizationData?.uniqueCode}</h3>
         </div>
         
       </div>
