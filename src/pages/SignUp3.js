@@ -1,10 +1,8 @@
 import React, { useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext';
 
 import mapImage from "./../images/map.jpg"
-import logo from "./../images/logo.png"
-
 import appLogo from "./../images/logo.png"
 
 function SignUp3() {
