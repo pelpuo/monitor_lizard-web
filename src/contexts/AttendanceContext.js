@@ -13,7 +13,7 @@ export function useAttendance(){
 
 
 export function AttendanceProvider({children}){
-    const {currentUser} = useAuth();
+    const {currentUser, makeid} = useAuth();
 
     const [organizationData, setOrganizationData] = useState();
     const [allAttendanceData, setAllAttendanceData] = useState(new Map());
@@ -135,6 +135,71 @@ export function AttendanceProvider({children}){
         })
     }
 
+
+    const updateUserDetails = async(firstName, lastName, email, password, cpassword) =>{
+        console.log("Updating user details")
+
+        const user = firebase.auth().currentUser
+
+        user.updateEmail(email)
+        .then(() =>{
+            user.updateProfile({
+                displayName: `${firstName} ${lastName}`
+            })
+            .then(() =>{
+                db.collection("organization").doc(organizationData.uid)
+                .update({
+                    adminName: `${firstName} ${lastName}`
+                })
+    
+            }).then(() =>{
+                if(password!== "" && password === cpassword){
+                    user.updatePassword(password)
+                }
+            })
+        }).catch((e)=>{
+            console.log(e)
+        }) 
+
+        
+   
+    }
+
+    const updateOrganizationDetails = async(orgName, industry, country, startingTime, closingTime, latitude, longitude) =>{
+        console.log("Updating organization details")
+
+        const startingTimeArr = String(startingTime).split(":")
+        const closingTimeArr = String(closingTime).split(":")
+
+        await db.collection("organization").doc(organizationData.uid)
+        .update({
+            "name": orgName,
+            "industry": industry,
+            "country": country,
+            "startingTime": new firebase.firestore.Timestamp(parseInt(startingTimeArr[0]) * 60 * 60 + parseInt(startingTimeArr[1]) * 60, 0),
+            "closingTime": new firebase.firestore.Timestamp(parseInt(closingTimeArr[0]) * 60 * 60 + parseInt(closingTimeArr[1]) * 60, 0),
+            "location": new firebase.firestore.GeoPoint(parseFloat(latitude), parseFloat(longitude)),
+        }).then(()=>{
+            alert("Organization details updated successfully")
+            retrieveOrganizationData()
+        })
+    }
+
+    const updateOrganizationCode = async () => {
+        console.log("Updating organization code")
+
+        const newCode = makeid(5)
+        await db.collection("organization").doc(organizationData.uid)
+        .update({
+            uniqueCode: newCode
+        }).then(()=>{
+            alert(`Organization code updated to ${newCode}`)
+            retrieveOrganizationData()
+        })
+    }
+
+
+
     useEffect(() => {
       if(currentUser){
         retrieveOrganizationData()
@@ -162,7 +227,10 @@ export function AttendanceProvider({children}){
         verifyEmployee,
         deleteEmployee,
         getEmployeeDataFromId,
-        getEmployeeFromId
+        getEmployeeFromId,
+        updateUserDetails,
+        updateOrganizationDetails,
+        updateOrganizationCode
     }
 
     return(

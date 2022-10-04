@@ -10,6 +10,7 @@ export function useAuth(){
 }
 
 export function AuthProvider({children}){
+    const [isLoading, setIsLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState();
     const [registeringUser, setRegisteringUser] = useState();
 
@@ -44,7 +45,7 @@ export function AuthProvider({children}){
         return result;
     }
 
-    async function registerUser(){
+    async function registerUser(registeringUser){
         console.log(registeringUser)
         const user = await signUp(registeringUser.email, registeringUser.password)
         await login(registeringUser.email, registeringUser.password)
@@ -55,8 +56,8 @@ export function AuthProvider({children}){
 
         await db.collection("organization").add({
             "adminId": user.uid,
-            "adminName": `${user.firstName} ${user.lastName}`,
-            "industry": "",
+            "adminName": `${registeringUser.firstName} ${registeringUser.lastName}`,
+            "industry": registeringUser.industry,
             "country": registeringUser.country,
             "name": registeringUser.organization,
             "startingTime": new firebase.firestore.Timestamp(parseInt(startingTimeArr[0]) * 60 * 60 + parseInt(startingTimeArr[1]) * 60, 0),
@@ -64,24 +65,31 @@ export function AuthProvider({children}){
             "location": new firebase.firestore.GeoPoint(parseFloat(registeringUser.latitude), parseFloat(registeringUser.longitude)),
             "uniqueCode": makeid(5)
 
-        })
+        }).then(docRef=>console.log("Document written with ID: ", docRef.id))
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
 
-        await firebase.auth.onAuthStateChanged(user =>{
+        firebase.auth().onAuthStateChanged(user =>{
             if(user){
-                firebase.auth.currentUser.updateProfile({
+                firebase.auth().currentUser.updateProfile({
                     displayName: `${registeringUser.firstName} ${registeringUser.lastName}`
                     })
+                setIsLoading(false)
             }
         })
         
+        await logout()
 
     }
 
-    function logout() {
+    async function logout() {
+        setIsLoading(false)
         return auth.signOut()
+        
     }
 
-    function makeid(length) {
+    const makeid = (length) => {
         var result           = '';
         var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var charactersLength = characters.length;
@@ -100,6 +108,7 @@ export function AuthProvider({children}){
             if(user){
                 // console.log(`Auth state changed and user is: ${user.displayName}`)
             }
+            setIsLoading(false)
         });
         return unsubscribe;
     }, [])
@@ -107,12 +116,14 @@ export function AuthProvider({children}){
     const value = {
         currentUser,
         registeringUser,
+        isLoading,
         setRegisteringUser,
         registerUser,
         checkEmailExists,
         signUp,
         login,
-        logout
+        logout,
+        makeid
     }
 
     return(

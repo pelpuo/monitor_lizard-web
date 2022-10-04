@@ -35,7 +35,7 @@ function SignUp1() {
             return;
         }
 
-        const emailExists = await checkEmailExists("test123@examples.com");
+        const emailExists = await checkEmailExists(emailRef.current.value);
 
         if(emailExists){
            setAuthErrors("Email addres already in use")

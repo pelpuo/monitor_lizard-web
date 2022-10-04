@@ -19,13 +19,17 @@ function SignUp3() {
       return
     }
 
-    setRegisteringUser({
+    const temp = {
       ...registeringUser,
       "latitude": latitudeRef.current.value,
       "longitude": longidudeRef.current.value
-    })
+    }
 
-    registerUser();
+    setRegisteringUser(temp)
+
+    console.log(temp)
+
+    registerUser(temp);
     navigate("/login")
   }
 
