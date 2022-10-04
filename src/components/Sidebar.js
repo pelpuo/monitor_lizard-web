@@ -10,6 +10,7 @@ import {TbLogout} from 'react-icons/tb'
 import {BsPeopleFill} from 'react-icons/bs'
 import { useAuth } from '../contexts/AuthContext';
 
+import appLogo from "./../images/logo_white.png"
 
 
 function Sidebar(props) {
@@ -38,13 +39,12 @@ function Sidebar(props) {
     >
       <div className="p-2 flex justify-between">
         <div className="flex items-center ">
-          <div className='flex flex-col items-start'>
-          <h1 className="font-bold text-gray-200 text-xl">LO</h1>
-          <h1 className="font-bold text-gray-200 text-xl">GO</h1>
+          <div className='flex flex-col items-start justify-center'>
+            <img alt='logo' src={appLogo} className="w-14"/>
           </div>
-          <div className='flex flex-col items-start ml-1'>
-          <h1 className="text-gray-200 text-md">Monitor</h1>
-          <h1 className="text-gray-200 text-md">Lizard</h1>
+          <div className='flex flex-col font-bold items-start justify-center ml-1'>
+          <h1 className="text-gray-200 text-lg leading-none mt-1">Monitor</h1>
+          <h1 className="text-gray-200 text-lg leading-tight">Lizard</h1>
           </div>
         </div>
         <div className='lg:hidden'>

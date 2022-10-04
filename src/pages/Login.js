@@ -3,6 +3,8 @@ import React, { useRef, useState } from 'react'
 import {Link, useNavigate} from "react-router-dom"
 import {useAuth} from "../contexts/AuthContext"
 
+import appLogo from "./../images/logo.png"
+
 function Login() {
     const emailRef = useRef();
     const passwordRef = useRef();
@@ -25,16 +27,15 @@ function Login() {
 
     return (
         <div className='Login-outer flex flex-col justify-center w-full p-2'>
-            <div className='flex row items-center'>
-                <div className='text-xl font-bold text-app-green pr-2'>
-                    <h1>LO</h1>
-                    <h1>GO</h1>
+                <div className="flex items-center ">
+                    <div className='flex flex-col items-start justify-center'>
+                        <img alt='logo' src={appLogo} className="w-14"/>
+                    </div>
+                    <div className='flex flex-col font-bold items-start justify-center ml-1'>
+                    <h1 className="text-app-dark text-lg leading-none mt-2">Monitor</h1>
+                    <h1 className="text-app-dark text-lg leading-tight">Lizard</h1>
+                    </div>
                 </div>
-                <div className='text-md text-app-dark'>
-                    <h1>Monitor</h1>
-                    <h1>Lizard</h1>
-                </div>
-            </div>
             <div className='Login flex items-center justify-center flex-1'>
                 <div className='login-div flex flex-col items-center'>
                 {authErrors !== "" && (<h4 className='text-md mb-6 text-app-pink'>{authErrors}</h4>)}
