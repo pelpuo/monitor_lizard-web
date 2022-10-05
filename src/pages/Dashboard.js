@@ -37,19 +37,19 @@ function Dashboard() {
           <div className='Stats-cards flex px-12 flex-wrap'>
             <div className='flex flex-col items-center'> 
             <h5 className='text-lg text-center font-semibold text-app-green'>Total<br/>Employees</h5>
-            <h3 className='text-3xl text-app-dark font-bold'>{allEmployeesData.size}</h3>
+            <h3 className='text-3xl text-app-dark font-bold'>{Array.from(allEmployeesData).filter(employee => employee[1].isVerified).length}</h3>
             </div>
           </div>
           <div className='Stats-cards flex px-12 border-x border-gray-300'>
             <div className='flex flex-col items-center'> 
             <h5 className='text-lg text-center font-semibold text-app-green'>In<br/>Office</h5>
-            <h3 className='text-3xl text-app-dark font-bold'>{inOffice}</h3>
+            <h3 className='text-3xl text-app-dark font-bold'>{Array.from(allAttendanceData).filter(employee => employee[1].status === "In Office").length}</h3>
             </div>
           </div>
           <div className='Stats-cards flex px-12'>
             <div className='flex flex-col items-center'> 
             <h5 className='text-lg text-center font-semibold text-app-pink'>Out<br/>of Office</h5>
-            <h3 className='text-3xl text-app-dark font-bold'>{allEmployeesData.size - inOffice}</h3>
+            <h3 className='text-3xl text-app-dark font-bold'>{Array.from(allEmployeesData).filter(employee => employee[1].isVerified).length - Array.from(allAttendanceData).filter(employee => employee[1].status === "In Office").length}</h3>
             </div>
           </div>
           <div className='flex-1 flex justify-center sm:justify-end'>
@@ -79,7 +79,7 @@ function Dashboard() {
         </thead>
         <tbody>
             {
-              Array.from(allAttendanceData).reverse().map((attendanceArr, index) => {
+              Array.from(allAttendanceData).map((attendanceArr, index) => {
               const attendance = attendanceArr[1]
               const employee = allEmployeesData.get(attendance?.employeeId)
               const date = attendance.date.toDate()
@@ -92,10 +92,10 @@ function Dashboard() {
 
               return (
                 <tr class={`text-app-dark ${index %2 === 1 && "bg-app-light-gray"}`} key={attendanceArr[0]} >
-                  <td class="py-4 px-6">{date.getDate() < 10 && "0"}{date.getDate()}/{date.getMonth() < 10 && "0"}{date.getMonth() + 1}/{date.getFullYear()}</td>
+                  <td class="py-4 px-6">{date.getDate() < 10 && "0"}{date.getDate()}/{date.getMonth() < 9 && "0"}{date.getMonth() + 1}/{date.getFullYear()}</td>
                   <td class="py-4 px-6"><Link to={`/employees/${employee?.uid}`}>{employee?.firstName} {employee?.lastName}</Link></td>
-                  <td class="py-4 px-6">{startTime.getHours()}:{startTime.getMinutes()} GMT</td>
-                  <td class="py-4 px-6">{endTime.getHours()}:{endTime.getMinutes()} GMT</td>
+                  <td class="py-4 px-6">{startTime.getHours() < 10 && "0"}{startTime.getHours()}:{startTime.getMinutes() < 10 && "0"}{startTime.getMinutes()} GMT</td>
+                  <td class="py-4 px-6">{endTime.getHours() < 10 && "0"}{endTime.getHours()}:{endTime.getMinutes() < 10 && "0"}{endTime.getMinutes()} GMT</td>
                   <td class="py-4 px-6">{workHour < 10 && "0"}{workHour}:{workMin < 10 && "0"}{workMin} Hrs</td>
                   <td class={`py-4 px-6 font-bold ${attendance.status === "In Office"? "text-app-green" : "text-app-pink"}`}>{attendance.status}</td>
                 </tr>

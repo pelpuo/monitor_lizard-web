@@ -92,9 +92,10 @@ export function AttendanceProvider({children}){
         const attendanceArray = Array.from(allAttendanceData)
         const temp = attendanceArray.filter((attendance) => 
         { 
-          return ((date.getDay() === attendance[1].date.toDate().getDay()) && 
-          (date.getMonth() === attendance[1].date.toDate().getMonth()) &&
-            attendance[1].status === "In Office")
+        //   return ((date.getDay() === attendance[1].date.toDate().getDay()) && 
+        //   (date.getMonth() === attendance[1].date.toDate().getMonth()) &&
+        //     attendance[1].status === "In Office")
+        return (attendance[1].status === "In Office")
         })
           setInOffice(temp.length)
       }, [allAttendanceData])
